@@ -65,7 +65,7 @@ fun NumbersList(
 }
 
 @Composable
-fun GridLayout(modifier: Modifier = Modifier, items: List<Int>) {
+fun GridLayout(modifier: Modifier = Modifier, items: MutableList<Int>) {
     val configuration = LocalConfiguration.current
     val columns = if (configuration.orientation == 1) 3 else 4
 
@@ -79,6 +79,9 @@ fun GridLayout(modifier: Modifier = Modifier, items: List<Int>) {
                 modifier = modifier.padding(8.dp).size(100.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = CardDefaults.cardColors(if (item % 2 == 0) Color.Red else Color.Blue),
+                onClick = {
+                    items.remove(item)
+                }
             ) {
                 Box(
                     modifier = modifier.fillMaxSize(),
@@ -101,6 +104,10 @@ class MyViewModel : ViewModel() {
         private set
 
     fun addItem() {
-        items.add(items.size)
+        if (items.isEmpty()) {
+            items += 1
+        } else {
+            items += items.last() + 1
+        }
     }
 }
